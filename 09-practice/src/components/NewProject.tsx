@@ -36,9 +36,9 @@ export default function NewProject({ onSave }: NewProjectProps) {
         </li>
       </menu>
       <div>
-        <Input label={"Title"} ref={title} />
+        <Input type="text" label={"Title"} ref={title} />
         <Input label={"Description"} isTextArea={true} ref={description} />
-        <Input label={"Due date"} ref={dueDate} />
+        <Input type="date" label={"Due date"} ref={dueDate} />
       </div>
     </div>
   );
