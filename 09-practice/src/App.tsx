@@ -18,12 +18,14 @@ export type ProjectSelection = number | null | undefined;
 export type AppState = {
   selectedProject: ProjectSelection;
   projects: ProjectType[];
+  nextId: number;
 };
 
 function App() {
   const [appState, setAppState] = useState<AppState>({
     selectedProject: undefined,
     projects: [],
+    nextId: 0,
   });
 
   function selectProject(selectedProject: ProjectSelection) {
@@ -41,13 +43,13 @@ function App() {
   }
 
   function handleAddProject(newProject: NewProjectType) {
-    const project: ProjectType = {
-      ...newProject,
-      id: appState.projects.length,
-    };
     setAppState((prevState) => ({
-      selectedProject: project.id,
-      projects: [...prevState.projects, project],
+      projects: [
+        ...prevState.projects,
+        { ...newProject, id: prevState.nextId },
+      ],
+      selectedProject: prevState.nextId,
+      nextId: prevState.nextId + 1,
     }));
   }
 
