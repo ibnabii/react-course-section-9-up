@@ -6,11 +6,13 @@ import ConfirmationModal, { ModalHandle } from "./ConfirmationModal.tsx";
 type ProjectDetailsViewProps = {
   project: ProjectType;
   onDelete: () => void;
+  onEdit: () => void;
 };
 
 export default function ProjectDetailsView({
   project,
   onDelete,
+  onEdit,
 }: ProjectDetailsViewProps) {
   const labelClasses =
     "text-sm font-bold uppercase text-stone-500 border-b-2 border-stone-300";
@@ -41,7 +43,7 @@ export default function ProjectDetailsView({
           <li key="edit">
             <button
               className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950 hover:text-stone-100"
-              // onClick={handleSave}
+              onClick={onEdit}
             >
               Edit
             </button>

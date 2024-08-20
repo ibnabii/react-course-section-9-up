@@ -67,6 +67,15 @@ function App() {
     });
   }
 
+  function handleModifyProject(modifiedProject: ProjectType) {
+    setAppState((prevState) => ({
+      ...prevState,
+      projects: prevState.projects.map((project) =>
+        project.id === modifiedProject.id ? modifiedProject : project,
+      ),
+    }));
+  }
+
   function getProject(projectId: ProjectSelection) {
     if (typeof projectId === "number") {
       const project = appState.projects.find(
@@ -100,6 +109,7 @@ function App() {
         <ProjectDetails
           project={selectedProject}
           onDelete={handleDeleteProject}
+          onModify={handleModifyProject}
         />
       )}
     </main>
