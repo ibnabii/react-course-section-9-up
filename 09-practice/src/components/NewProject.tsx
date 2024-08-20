@@ -1,7 +1,13 @@
 import Input from "./Input.tsx";
 import { useRef } from "react";
 
-export default function NewProject() {
+import { NewProjectType } from "../App.tsx";
+
+type NewProjectProps = {
+  onSave: (project: NewProjectType) => void;
+};
+
+export default function NewProject({ onSave }: NewProjectProps) {
   const title = useRef<HTMLInputElement>(null);
   const description = useRef<HTMLInputElement>(null);
   const dueDate = useRef<HTMLInputElement>(null);
@@ -15,7 +21,16 @@ export default function NewProject() {
           </button>
         </li>
         <li>
-          <button className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950 hover:text-stone-100">
+          <button
+            className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950 hover:text-stone-100"
+            onClick={() => {
+              onSave({
+                title: title.current!.value,
+                description: description.current!.value,
+                dueDate: dueDate.current!.value,
+              });
+            }}
+          >
             Save
           </button>
         </li>

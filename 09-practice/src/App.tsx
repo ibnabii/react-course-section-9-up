@@ -4,20 +4,20 @@ import ProjectsSidebar from "./components/ProjectsSidebar.tsx";
 import NewProject from "./components/NewProject.tsx";
 import NoProjectSelected from "./components/NoProjectSelected.tsx";
 
-type NewProject = {
+export type NewProjectType = {
   title: string;
   description: string;
   dueDate: string;
 };
-type Project = {
+type ProjectType = {
   id: number;
-} & NewProject;
+} & NewProjectType;
 
 export type ProjectSelection = number | null | undefined;
 
-type AppState = {
+export type AppState = {
   selectedProject: ProjectSelection;
-  projects: Project[];
+  projects: ProjectType[];
 };
 
 function App() {
@@ -40,13 +40,30 @@ function App() {
     }));
   }
 
+  function handleAddProject(newProject: NewProjectType) {
+    const project: ProjectType = {
+      ...newProject,
+      id: appState.projects.length,
+    };
+    setAppState((prevState) => ({
+      selectedProject: project.id,
+      projects: [...prevState.projects, project],
+    }));
+  }
+
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar startNewProject={handleStartNewProject} />
+      <ProjectsSidebar
+        startNewProject={handleStartNewProject}
+        selectProject={selectProject}
+        appState={appState}
+      />
       {appState.selectedProject === undefined && (
         <NoProjectSelected startNewProject={handleStartNewProject} />
       )}
-      {appState.selectedProject === null && <NewProject />}
+      {appState.selectedProject === null && (
+        <NewProject onSave={handleAddProject} />
+      )}
     </main>
   );
 }
