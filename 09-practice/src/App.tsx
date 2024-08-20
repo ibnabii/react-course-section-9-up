@@ -4,12 +4,14 @@ import ProjectsSidebar from "./components/ProjectsSidebar.tsx";
 import NewProject from "./components/NewProject.tsx";
 import NoProjectSelected from "./components/NoProjectSelected.tsx";
 
-type Project = {
-  id: number;
+type NewProject = {
   title: string;
   description: string;
   dueDate: string;
 };
+type Project = {
+  id: number;
+} & NewProject;
 
 export type ProjectSelection = number | null | undefined;
 

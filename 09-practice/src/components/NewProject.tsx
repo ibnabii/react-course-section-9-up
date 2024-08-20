@@ -2,9 +2,9 @@ import Input from "./Input.tsx";
 import { useRef } from "react";
 
 export default function NewProject() {
-  const title = useRef<HTMLInputElement>();
-  const description = useRef<HTMLInputElement>();
-  const dueDate = useRef<HTMLInputElement>();
+  const title = useRef<HTMLInputElement>(null);
+  const description = useRef<HTMLInputElement>(null);
+  const dueDate = useRef<HTMLInputElement>(null);
 
   return (
     <div className="w-[35rem] mt-16">
@@ -22,8 +22,8 @@ export default function NewProject() {
       </menu>
       <div>
         <Input label={"Title"} ref={title} />
-        <Input label={"Description"} isTextArea={true} />
-        <Input label={"Due date"} />
+        <Input label={"Description"} isTextArea={true} ref={description} />
+        <Input label={"Due date"} ref={dueDate} />
       </div>
     </div>
   );
