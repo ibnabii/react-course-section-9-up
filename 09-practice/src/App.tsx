@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import ProjectsSidebar from "./components/ProjectsSidebar.tsx";
+import ProjectDetails from "./components/ProjectDetails.tsx";
 import NewProject from "./components/NewProject.tsx";
 import NoProjectSelected from "./components/NoProjectSelected.tsx";
 
@@ -9,7 +10,8 @@ export type NewProjectType = {
   description: string;
   dueDate: string;
 };
-type ProjectType = {
+
+export type ProjectType = {
   id: number;
 } & NewProjectType;
 
@@ -53,6 +55,30 @@ function App() {
     }));
   }
 
+  function handleDeleteProject(projectId: number) {
+    setAppState((prevState) => {
+      return {
+        ...prevState,
+        projects: prevState.projects.filter(
+          (project) => project.id !== projectId,
+        ),
+        selectedProject: undefined,
+      };
+    });
+  }
+
+  function getProject(projectId: ProjectSelection) {
+    if (typeof projectId === "number") {
+      const project = appState.projects.find(
+        (project) => project.id === projectId,
+      );
+      if (project) return project;
+      else selectProject(undefined);
+    }
+    return null;
+  }
+  const selectedProject = getProject(appState.selectedProject);
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <ProjectsSidebar
@@ -67,6 +93,13 @@ function App() {
         <NewProject
           onSave={handleAddProject}
           onCancel={() => selectProject(undefined)}
+        />
+      )}
+
+      {selectedProject && (
+        <ProjectDetails
+          project={selectedProject}
+          onDelete={handleDeleteProject}
         />
       )}
     </main>
