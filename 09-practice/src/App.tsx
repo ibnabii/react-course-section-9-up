@@ -62,7 +62,10 @@ function App() {
         <NoProjectSelected startNewProject={handleStartNewProject} />
       )}
       {appState.selectedProject === null && (
-        <NewProject onSave={handleAddProject} />
+        <NewProject
+          onSave={handleAddProject}
+          onCancel={() => selectProject(undefined)}
+        />
       )}
     </main>
   );

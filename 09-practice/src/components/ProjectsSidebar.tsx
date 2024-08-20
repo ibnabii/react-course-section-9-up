@@ -28,7 +28,7 @@ export default function ProjectsSidebar({
             projectTitle={project.title}
             isActive={project.id === appState.selectedProject}
             onClick={() => selectProject(project.id)}
-            projectId={project.id}
+            key={project.id}
           />
         ))}
       </ul>
