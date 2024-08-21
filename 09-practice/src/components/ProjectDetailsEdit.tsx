@@ -36,7 +36,7 @@ export default function ProjectDetailsEdit({
     }
 
     onSave({
-      id: project.id,
+      ...project,
       title: title,
       description: description,
       dueDate: dueDate,

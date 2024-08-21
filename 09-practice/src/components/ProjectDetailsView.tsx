@@ -2,17 +2,24 @@ import { useRef } from "react";
 
 import { ProjectType } from "../App.tsx";
 import ConfirmationModal, { ModalHandle } from "./ConfirmationModal.tsx";
+import TasksList from "./TasksList.tsx";
 
 type ProjectDetailsViewProps = {
   project: ProjectType;
   onDelete: () => void;
   onEdit: () => void;
+  onDeleteTask: (taskId: number) => void;
+  onAddTask: (name: string) => void;
+  onToggleTask: (taskId: number) => void;
 };
 
 export default function ProjectDetailsView({
   project,
   onDelete,
   onEdit,
+  onDeleteTask,
+  onAddTask,
+  onToggleTask,
 }: ProjectDetailsViewProps) {
   const labelClasses =
     "text-sm font-bold uppercase text-stone-500 border-b-2 border-stone-300";
@@ -63,6 +70,14 @@ export default function ProjectDetailsView({
           <p className={labelClasses}>Due date</p>
           <p className={valueClasses}>{project.dueDate}</p>
         </div>
+        <hr />
+        <h2 className="text-xl font-bold my-4 text-stone-500">Tasks</h2>
+        <TasksList
+          tasks={project.tasks}
+          onTogglePending={onToggleTask}
+          onDelete={onDeleteTask}
+          onAdd={onAddTask}
+        />
       </div>
     </>
   );

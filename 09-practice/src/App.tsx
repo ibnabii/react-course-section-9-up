@@ -11,8 +11,16 @@ export type NewProjectType = {
   dueDate: string;
 };
 
+export type TaskType = {
+  id: number;
+  name: string;
+  isPending: boolean;
+};
+
 export type ProjectType = {
   id: number;
+  tasks: TaskType[];
+  nextTaskId: number;
 } & NewProjectType;
 
 export type ProjectSelection = number | null | undefined;
@@ -48,7 +56,7 @@ function App() {
     setAppState((prevState) => ({
       projects: [
         ...prevState.projects,
-        { ...newProject, id: prevState.nextId },
+        { ...newProject, id: prevState.nextId, tasks: [], nextTaskId: 0 },
       ],
       selectedProject: prevState.nextId,
       nextId: prevState.nextId + 1,
@@ -86,6 +94,67 @@ function App() {
     }
     return null;
   }
+
+  function handleAddTask(name: string, projectId: number) {
+    setAppState((prevState) => ({
+      ...prevState,
+      projects: prevState.projects.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              nextTaskId: project.nextTaskId + 1,
+              tasks: [
+                ...project.tasks,
+                {
+                  id: project.nextTaskId,
+                  name: name,
+                  isPending: true,
+                },
+              ],
+            }
+          : project,
+      ),
+    }));
+  }
+
+  function handleDeleteTask(
+    projectId: ProjectType["id"],
+    taskId: TaskType["id"],
+  ) {
+    setAppState((prevState) => ({
+      ...prevState,
+      projects: prevState.projects.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              tasks: project.tasks.filter((task) => task.id !== taskId),
+            }
+          : project,
+      ),
+    }));
+  }
+
+  function handleToggleTask(
+    projectId: ProjectType["id"],
+    taskId: TaskType["id"],
+  ) {
+    setAppState((prevState) => ({
+      ...prevState,
+      projects: prevState.projects.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              tasks: project.tasks.map((task) =>
+                task.id === taskId
+                  ? { ...task, isPending: !task.isPending }
+                  : task,
+              ),
+            }
+          : project,
+      ),
+    }));
+  }
+
   const selectedProject = getProject(appState.selectedProject);
 
   return (
@@ -110,6 +179,13 @@ function App() {
           project={selectedProject}
           onDelete={handleDeleteProject}
           onModify={handleModifyProject}
+          onAddTask={(name) => handleAddTask(name, selectedProject.id)}
+          onDeleteTask={(taskId) =>
+            handleDeleteTask(selectedProject.id, taskId)
+          }
+          onToggleTask={(taskId) =>
+            handleToggleTask(selectedProject.id, taskId)
+          }
         />
       )}
     </main>
