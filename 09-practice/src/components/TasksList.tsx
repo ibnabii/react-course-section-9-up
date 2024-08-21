@@ -21,7 +21,7 @@ export default function TasksList({
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    onAdd(taskName.current!.value);
+    if (taskName.current!.value !== "") onAdd(taskName.current!.value);
     taskName.current!.value = "";
   }
 
@@ -38,7 +38,7 @@ export default function TasksList({
         />
         <Button>+ Add task</Button>
       </form>
-      <ul>
+      <ul className="p-4 mt-8 rounded-md bg-stone-100">
         {tasks
           .sort((a, b) => {
             if (a.isPending !== b.isPending) {
