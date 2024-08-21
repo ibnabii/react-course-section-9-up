@@ -55,7 +55,9 @@ export default function ProjectDetailsView({
         </div>
         <div className="flex flex-col gap-2 my-4">
           <p className={labelClasses}>Description</p>
-          <p className={valueClasses}>{project.description}</p>
+          <p className={`${valueClasses} whitespace-pre-wrap`}>
+            {project.description}
+          </p>
         </div>
         <div className="flex flex-col gap-2 my-4">
           <p className={labelClasses}>Due date</p>
