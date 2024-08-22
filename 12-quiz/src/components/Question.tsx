@@ -19,7 +19,7 @@ export default function Question() {
         {question.answers.map((answer, id) => (
           <li className="answer" key={id}>
             <button
-              onClick={() => context.dispatch({ type: "ANSWER", id: id })}
+              onClick={() => context.dispatch({ type: "ANSWER", text: answer })}
             >
               {answer}
             </button>

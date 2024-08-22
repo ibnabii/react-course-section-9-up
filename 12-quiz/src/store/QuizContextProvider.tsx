@@ -43,7 +43,7 @@ type ResetAction = {
 
 type AnswerAction = {
   type: "ANSWER";
-  id: AnswerType["answer"];
+  text: AnswerType["answer"];
 };
 
 type ActionType = ResetAction | AnswerAction;
@@ -79,7 +79,7 @@ function quizReducer(state: QuizStateType, action: ActionType): QuizStateType {
     const { question, newList } = nextQuestion(state.questions);
     const newAnswers = [
       ...state.answers,
-      { answer: action.id, questionId: state.currentQuestion!.id },
+      { answer: action.text, questionId: state.currentQuestion!.id },
     ];
     if (!question)
       return {
