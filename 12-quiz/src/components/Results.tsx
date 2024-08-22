@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { QuizContext } from "../store/QuizContextProvider.tsx";
+import quizCompleteImg from "../assets/quiz-complete.png";
 
 export default function Results() {
   const context = useContext(QuizContext);
@@ -14,6 +15,7 @@ export default function Results() {
 
   return (
     <div id="summary">
+      <img src={quizCompleteImg} alt="Trophy icon" />
       <h2>Your score: {score}</h2>
       <button onClick={() => context.dispatch({ type: "RESET" })}>
         Try again
