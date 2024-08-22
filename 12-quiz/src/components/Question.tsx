@@ -15,17 +15,17 @@ export default function Question() {
         <h2>{question.text}</h2>
         <Timer />
       </div>
-      <div id="answers">
+      <ul id="answers">
         {question.answers.map((answer, id) => (
-          <div className="answer" key={id}>
+          <li className="answer" key={id}>
             <button
               onClick={() => context.dispatch({ type: "ANSWER", id: id })}
             >
               {answer}
             </button>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }

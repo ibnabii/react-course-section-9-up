@@ -16,7 +16,7 @@ type QuestionType = {
 
 type AnswerType = {
   questionId: string;
-  answer: number;
+  answer: string;
 };
 
 type PhaseType = "LANDING" | "QUIZ" | "RESULTS";
@@ -43,7 +43,7 @@ type ResetAction = {
 
 type AnswerAction = {
   type: "ANSWER";
-  id: number;
+  id: AnswerType["answer"];
 };
 
 type ActionType = ResetAction | AnswerAction;
@@ -57,6 +57,9 @@ function quizReducer(state: QuizStateType, action: ActionType): QuizStateType {
     const randomIndex = Math.floor(Math.random() * list.length);
     const question = list[randomIndex];
     const newList = list.filter((_, index) => index !== randomIndex);
+    const shuffledAnswers = [...question.answers];
+    shuffledAnswers.sort(() => Math.random() - 0.5);
+    question.answers = shuffledAnswers;
     return { question, newList };
   }
 
