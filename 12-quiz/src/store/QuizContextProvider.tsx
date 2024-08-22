@@ -49,19 +49,23 @@ type AnswerAction = {
 type ActionType = ResetAction | AnswerAction;
 
 function quizReducer(state: QuizStateType, action: ActionType): QuizStateType {
-  function nextQuestion(list: QuestionType[]) {
-    if (!list.length) return null;
+  function nextQuestion(list: QuestionType[]): {
+    question: QuestionType | null;
+    newList: QuestionType[];
+  } {
+    if (!list.length) return { question: null, newList: list };
     const randomIndex = Math.floor(Math.random() * list.length);
-    const [question] = list.splice(randomIndex, 1);
-    return question;
+    const question = list[randomIndex];
+    const newList = list.filter((_, index) => index !== randomIndex);
+    return { question, newList };
   }
 
   if (action.type === "RESET") {
     const questionList: QuestionType[] = structuredClone(loadedQuestions);
-    const question = nextQuestion(questionList);
+    const { question, newList } = nextQuestion(questionList);
     return {
       ...state,
-      questions: questionList,
+      questions: newList,
       answers: [],
       currentQuestion: question,
       phase: "QUIZ",
@@ -69,7 +73,7 @@ function quizReducer(state: QuizStateType, action: ActionType): QuizStateType {
   }
 
   if (action.type === "ANSWER") {
-    const question = nextQuestion(state.questions);
+    const { question, newList } = nextQuestion(state.questions);
     const newAnswers = [
       ...state.answers,
       { answer: action.id, questionId: state.currentQuestion!.id },
@@ -84,6 +88,7 @@ function quizReducer(state: QuizStateType, action: ActionType): QuizStateType {
     return {
       ...state,
       currentQuestion: question,
+      questions: newList,
       answers: newAnswers,
     };
   }
