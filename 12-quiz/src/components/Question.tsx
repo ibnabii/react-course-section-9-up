@@ -49,6 +49,7 @@ export default function Question() {
               <button
                 onClick={() => handleSelectAnswer(answer)}
                 className={cssClasses}
+                disabled={!!selectedAnswer}
               >
                 {answer}
               </button>
