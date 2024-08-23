@@ -8,10 +8,13 @@ import {
 // @ts-expect-error this is just a file with questions
 import loadedQuestions from "../assets/questions.js";
 
-type QuestionType = {
+type QuestionBasicType = {
   id: string;
   text: string;
   answers: string[];
+};
+type QuestionType = QuestionBasicType & {
+  correctAnswer: string;
 };
 
 type AnswerType = {
@@ -57,6 +60,7 @@ function quizReducer(state: QuizStateType, action: ActionType): QuizStateType {
     const randomIndex = Math.floor(Math.random() * list.length);
     const question = list[randomIndex];
     const newList = list.filter((_, index) => index !== randomIndex);
+    question.correctAnswer = question.answers[0];
     const shuffledAnswers = [...question.answers];
     shuffledAnswers.sort(() => Math.random() - 0.5);
     question.answers = shuffledAnswers;

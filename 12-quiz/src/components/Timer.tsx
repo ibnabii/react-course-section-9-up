@@ -1,7 +1,20 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  MutableRefObject,
+} from "react";
 import { QuizContext } from "../store/QuizContextProvider.tsx";
 
-export default function Timer() {
+export type TimerHandle = {
+  stop: () => void;
+};
+
+const Timer = forwardRef<TimerHandle>(function Timer(_props, ref) {
   const context = useContext(QuizContext);
   if (!context) {
     throw new Error("QuizContext must be used within a QuizContextProvider");
@@ -9,6 +22,20 @@ export default function Timer() {
   const maxTime = context.quiz.timeout;
   const [remainingTime, setRemainingTime] = useState<number>(maxTime);
   const interval = 20;
+
+  const timeoutRef = useRef<number>(null) as MutableRefObject<number>;
+  const intervalRef = useRef<number>(null) as MutableRefObject<number>;
+
+  useImperativeHandle(ref, () => ({
+    stop() {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    },
+  }));
 
   const onTimeout = useCallback(
     function onTimeout() {
@@ -18,17 +45,17 @@ export default function Timer() {
   );
 
   useEffect(() => {
-    const timeoutTimer = setTimeout(onTimeout, maxTime);
-    return () => clearTimeout(timeoutTimer);
+    timeoutRef.current = setTimeout(onTimeout, maxTime);
+    return () => clearTimeout(timeoutRef.current);
   }, [onTimeout, maxTime]);
 
   useEffect(() => {
     setRemainingTime(maxTime);
-    const timer = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setRemainingTime((prevTime) => prevTime - interval);
     }, interval);
     return () => {
-      clearInterval(timer);
+      clearInterval(intervalRef.current);
     };
   }, [context]);
 
@@ -39,4 +66,6 @@ export default function Timer() {
       id="question-time"
     />
   );
-}
+});
+
+export default Timer;

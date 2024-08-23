@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { QuizContext } from "../store/QuizContextProvider.tsx";
-import Timer from "./Timer.tsx";
+import Timer, { TimerHandle } from "./Timer.tsx";
+
+type AnswerStateType = "" | "correct" | "wrong";
 
 export default function Question() {
   const context = useContext(QuizContext);
@@ -9,22 +11,51 @@ export default function Question() {
   }
   const question = context.quiz.currentQuestion;
   if (!question) throw new Error("Error reading question");
+
+  const [answerState, setAnswerState] = useState<AnswerStateType>("");
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const timer = useRef<TimerHandle>(null);
+
+  function handleSelectAnswer(selectedAnswer: string) {
+    timer.current?.stop();
+    setSelectedAnswer(selectedAnswer);
+    setTimeout(() => {
+      if (selectedAnswer === question!.correctAnswer) {
+        setAnswerState("correct");
+      } else {
+        setAnswerState("wrong");
+      }
+      setTimeout(() => {
+        context!.dispatch({ type: "ANSWER", text: selectedAnswer });
+      }, 2000);
+    }, 1000);
+  }
+
   return (
     <>
       <div id="question">
         <h2>{question.text}</h2>
-        <Timer />
+        <Timer ref={timer} />
       </div>
       <ul id="answers">
-        {question.answers.map((answer, id) => (
-          <li className="answer" key={id}>
-            <button
-              onClick={() => context.dispatch({ type: "ANSWER", text: answer })}
-            >
-              {answer}
-            </button>
-          </li>
-        ))}
+        {question.answers.map((answer, id) => {
+          let cssClasses = "";
+          if (selectedAnswer === answer) {
+            if (answerState) cssClasses = answerState;
+            else cssClasses = "selected";
+            console.log(cssClasses);
+          }
+          return (
+            <li className="answer" key={id}>
+              <button
+                onClick={() => handleSelectAnswer(answer)}
+                className={cssClasses}
+              >
+                {answer}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </>
   );
