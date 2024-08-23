@@ -8,11 +8,12 @@ import {
 // @ts-expect-error this is just a file with questions
 import loadedQuestions from "../assets/questions.js";
 
-type QuestionBasicType = {
+export type QuestionBasicType = {
   id: string;
   text: string;
   answers: string[];
 };
+
 type QuestionType = QuestionBasicType & {
   correctAnswer: string;
 };
@@ -37,7 +38,7 @@ const initialQuizState: QuizStateType = {
   currentQuestion: null,
   answers: [],
   phase: "LANDING",
-  timeout: 5 * 1000,
+  timeout: 10 * 1000,
 };
 
 type ResetAction = {

@@ -43,7 +43,6 @@ export default function Question() {
           if (selectedAnswer === answer) {
             if (answerState) cssClasses = answerState;
             else cssClasses = "selected";
-            console.log(cssClasses);
           }
           return (
             <li className="answer" key={id}>
