@@ -10,14 +10,16 @@ import logoImg from "./assets/logo.png";
 // @ts-expect-error jsx
 import AvailablePlaces from "./components/AvailablePlaces.jsx";
 
+import { type PlaceType } from "./components/TypesForOldComponents.tsx";
+
 function App() {
-  const selectedPlace = useRef();
+  const selectedPlace = useRef<PlaceType | null>(null);
 
-  const [userPlaces, setUserPlaces] = useState([]);
+  const [userPlaces, setUserPlaces] = useState<PlaceType[]>([]);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-  function handleStartRemovePlace(place) {
+  function handleStartRemovePlace(place: PlaceType) {
     setModalIsOpen(true);
     selectedPlace.current = place;
   }
@@ -26,7 +28,7 @@ function App() {
     setModalIsOpen(false);
   }
 
-  function handleSelectPlace(selectedPlace) {
+  function handleSelectPlace(selectedPlace: PlaceType) {
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];
@@ -39,8 +41,13 @@ function App() {
   }
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
+    if (!selectedPlace.current) {
+      return; // Ensure that `current` is not null before proceeding
+    }
     setUserPlaces((prevPickedPlaces) =>
-      prevPickedPlaces.filter((place) => place.id !== selectedPlace.current.id),
+      prevPickedPlaces.filter(
+        (place) => place.id !== selectedPlace.current!.id,
+      ),
     );
 
     setModalIsOpen(false);
@@ -48,13 +55,13 @@ function App() {
 
   return (
     <>
+      <p>aaa</p>
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
         />
       </Modal>
-
       <header>
         <img src={logoImg} alt="Stylized globe" />
         <h1>PlacePicker</h1>
