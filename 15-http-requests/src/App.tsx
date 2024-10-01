@@ -1,14 +1,10 @@
 import { useRef, useState, useCallback } from "react";
 
-// @ts-expect-error jsx
-import Places from "./components/Places.jsx";
-// @ts-expect-error jsx
-import Modal from "./components/Modal.jsx";
-// @ts-expect-error jsx
-import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
+import Places from "./components/Places.tsx";
+import Modal from "./components/Modal.tsx";
+import DeleteConfirmation from "./components/DeleteConfirmation.tsx";
 import logoImg from "./assets/logo.png";
-// @ts-expect-error jsx
-import AvailablePlaces from "./components/AvailablePlaces.jsx";
+import AvailablePlaces from "./components/AvailablePlaces.tsx";
 
 import { type PlaceType } from "./components/TypesForOldComponents.tsx";
 
@@ -55,7 +51,6 @@ function App() {
 
   return (
     <>
-      <p>aaa</p>
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
