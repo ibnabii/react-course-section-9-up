@@ -10,6 +10,7 @@ export default function AvailablePlaces({
   onSelectPlace,
 }: AvailablePlacesProps) {
   const [availablePlaces, setAvailablePlaces] = useState<PlaceType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     // fetch("http://localhost:3000/places")
@@ -18,9 +19,11 @@ export default function AvailablePlaces({
     //     setAvailablePlaces(data.places);
     //   });
     async function fetchPlaces() {
+      setIsLoading(true);
       const response = await fetch("http://localhost:3000/places");
       const data = await response.json();
       setAvailablePlaces(data.places);
+      setIsLoading(false);
     }
 
     fetchPlaces();
@@ -32,6 +35,8 @@ export default function AvailablePlaces({
       places={availablePlaces}
       fallbackText="No places available."
       onSelectPlace={onSelectPlace}
+      loadingText="Fetching places data..."
+      isLoading={isLoading}
     />
   );
 }
