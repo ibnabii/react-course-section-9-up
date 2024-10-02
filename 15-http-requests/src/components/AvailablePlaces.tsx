@@ -1,4 +1,4 @@
-import Places from "./Places.jsx";
+import Places from "./Places.tsx";
 import { type PlaceType } from "./TypesForOldComponents.tsx";
 import { useEffect, useState } from "react";
 
