@@ -3,6 +3,9 @@ import { type PlaceType } from "./TypesForOldComponents.tsx";
 import { useEffect, useState } from "react";
 import ErrorPage from "./Error.tsx";
 
+// @ts-expect-error just a file
+import { sortPlacesByDistance } from "../loc.js";
+
 type AvailablePlacesProps = {
   onSelectPlace: (selectedPlace: PlaceType) => void;
 };
@@ -29,15 +32,24 @@ export default function AvailablePlaces({
         if (!response.ok) {
           throw new Error("Cannot fetch places.");
         }
+
+        navigator.geolocation.getCurrentPosition((position) => {
+          const sortedPlaces = sortPlacesByDistance(
+            data.places,
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+          setAvailablePlaces(sortedPlaces);
+          setIsLoading(false);
+        });
+
         const data = await response.json();
-        setAvailablePlaces(data.places);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setError(error as Error);
+          setIsLoading(false);
         }
       }
-
-      setIsLoading(false);
     }
 
     fetchPlaces();
