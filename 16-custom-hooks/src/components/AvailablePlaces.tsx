@@ -1,71 +1,53 @@
 import Places from "./Places.tsx";
 import { type PlaceType } from "./TypesForOldComponents.tsx";
-import { useEffect, useState } from "react";
 import ErrorPage from "./Error.tsx";
 
 // @ts-expect-error just a file
 import { sortPlacesByDistance } from "../loc.js";
+// @ts-expect-error just a file
+import { fetchAvailablePlaces } from "../http";
+import useFetch from "../hooks/useFetch.ts";
 
 type AvailablePlacesProps = {
   onSelectPlace: (selectedPlace: PlaceType) => void;
 };
 
+async function fetchSortedPlaces(): Promise<PlaceType[]> {
+  const places = await fetchAvailablePlaces();
+
+  return new Promise((resolve) => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sortedPlaces = sortPlacesByDistance(
+        places,
+        position.coords.latitude,
+        position.coords.longitude,
+      );
+      resolve(sortedPlaces);
+    });
+  });
+}
+
 export default function AvailablePlaces({
   onSelectPlace,
 }: AvailablePlacesProps) {
-  const [availablePlaces, setAvailablePlaces] = useState<PlaceType[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    // fetch("http://localhost:3000/places")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setAvailablePlaces(data.places);
-    //   });
-    async function fetchPlaces() {
-      setIsLoading(true);
-
-      try {
-        const response = await fetch("http://localhost:3000/places");
-
-        if (!response.ok) {
-          throw new Error("Cannot fetch places.");
-        }
-
-        navigator.geolocation.getCurrentPosition((position) => {
-          const sortedPlaces = sortPlacesByDistance(
-            data.places,
-            position.coords.latitude,
-            position.coords.longitude,
-          );
-          setAvailablePlaces(sortedPlaces);
-          setIsLoading(false);
-        });
-
-        const data = await response.json();
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error as Error);
-          setIsLoading(false);
-        }
-      }
-    }
-
-    fetchPlaces();
-  }, []);
+  const {
+    isFetching,
+    fetchedData: availablePlaces,
+    error,
+  } = useFetch(fetchSortedPlaces);
 
   if (error) {
     return <ErrorPage title="An error occurred!" message={error.message} />;
   }
+
   return (
     <Places
       title="Available Places"
       places={availablePlaces}
+      isLoading={isFetching}
+      loadingText="Fetching place data..."
       fallbackText="No places available."
       onSelectPlace={onSelectPlace}
-      loadingText="Fetching places data..."
-      isLoading={isLoading}
     />
   );
 }

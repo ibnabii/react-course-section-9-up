@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 
 import Places from "./components/Places.tsx";
 import Modal from "./components/Modal.tsx";
@@ -9,40 +9,21 @@ import AvailablePlaces from "./components/AvailablePlaces.tsx";
 import { fetchUserPlaces, updateUserPlaces } from "./http.js";
 import ErrorPage from "./components/Error.jsx";
 import { PlaceType } from "./components/TypesForOldComponents.tsx";
+import useFetch from "./hooks/useFetch.ts";
 
 function App() {
   const selectedPlace = useRef<PlaceType>();
 
-  const [userPlaces, setUserPlaces] = useState<PlaceType[]>([]);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState<Error | null>(
     null,
   );
-
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    async function fetchPlaces() {
-      setIsFetching(true);
-      try {
-        const places = await fetchUserPlaces();
-        setUserPlaces(places);
-      } catch (error) {
-        setError(
-          error instanceof Error
-            ? error
-            : new Error("Failed to fetch user places."),
-        );
-      }
-
-      setIsFetching(false);
-    }
-
-    fetchPlaces();
-  }, []);
-
+  const {
+    isFetching,
+    error,
+    fetchedData,
+    setFetchedData: setUserPlaces,
+  } = useFetch(fetchUserPlaces);
   function handleStartRemovePlace(place: PlaceType) {
     setModalIsOpen(true);
     selectedPlace.current = place;
@@ -66,9 +47,9 @@ function App() {
     });
 
     try {
-      await updateUserPlaces([selectedPlace, ...userPlaces]);
+      await updateUserPlaces([selectedPlace, ...fetchedData]);
     } catch (error) {
-      setUserPlaces(userPlaces);
+      setUserPlaces(fetchedData);
       setErrorUpdatingPlaces(
         error instanceof Error ? error : new Error("Failed to update places."),
       );
@@ -85,10 +66,10 @@ function App() {
 
       try {
         await updateUserPlaces(
-          userPlaces.filter((place) => place.id !== selectedPlace.current!.id),
+          fetchedData.filter((place) => place.id !== selectedPlace.current!.id),
         );
       } catch (error) {
-        setUserPlaces(userPlaces);
+        setUserPlaces(fetchedData);
         setErrorUpdatingPlaces(
           error instanceof Error ? error : new Error("Failed to delete place."),
         );
@@ -96,12 +77,14 @@ function App() {
 
       setModalIsOpen(false);
     },
-    [userPlaces],
+    [fetchedData, setUserPlaces],
   );
 
   function handleError() {
     setErrorUpdatingPlaces(null);
   }
+  // function handleRemovePlace() {}
+  // function handleSelectPlace() {}
 
   return (
     <>
@@ -140,7 +123,7 @@ function App() {
             fallbackText="Select the places you would like to visit below."
             isLoading={isFetching}
             loadingText="Fetching your places..."
-            places={userPlaces}
+            places={fetchedData}
             onSelectPlace={handleStartRemovePlace}
           />
         )}
