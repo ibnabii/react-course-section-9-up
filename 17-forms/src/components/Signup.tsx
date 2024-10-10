@@ -3,7 +3,8 @@ import { FormEvent } from "react";
 export default function Signup() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const fd = new FormData(event.target as HTMLFormElement);
+    const formElement = event.target as HTMLFormElement;
+    const fd = new FormData(formElement);
     const acquisitionChannel = fd.getAll("acquisition");
     // const data = Object.fromEntries(fd.entries());
     // this comes from ChatGPT:
@@ -13,6 +14,8 @@ export default function Signup() {
 
     data.acquisition = acquisitionChannel;
     console.log(data);
+
+    formElement.reset();
   }
 
   return (
