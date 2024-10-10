@@ -4,6 +4,11 @@ type ValuesType = {
   email: string;
   password: string;
 };
+
+type BlurType = {
+  email: boolean;
+  password: boolean;
+};
 export default function Login() {
   // const [enteredEmail, setEnteredEmail] = useState<string>("");
   // const [enteredPassword, setEnteredPassword] = useState<string>("");
@@ -12,8 +17,12 @@ export default function Login() {
     password: "",
   });
 
-  const emailIsInvalid =
-    enteredValues.email !== "" && !enteredValues.email.includes("@");
+  const [didEdit, setDidEdit] = useState<BlurType>({
+    email: false,
+    password: false,
+  });
+
+  const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
 
   // function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
   //   setEnteredEmail(event.target.value);
@@ -27,6 +36,19 @@ export default function Login() {
     setEnteredValues((prevState) => ({
       ...prevState,
       [identifier]: value,
+    }));
+
+    //   to remove the error when user is typing
+    setDidEdit((prevState) => ({
+      ...prevState,
+      [identifier]: false,
+    }));
+  }
+
+  function handleInputBlur(identifier: string) {
+    setDidEdit((prevState) => ({
+      ...prevState,
+      [identifier]: true,
     }));
   }
 
@@ -47,6 +69,7 @@ export default function Login() {
             name="email"
             onChange={(event) => handleInputChange("email", event.target.value)}
             value={enteredValues.email}
+            onBlur={() => handleInputBlur("email")}
           />
           <div className="control-error">
             {emailIsInvalid && <p>Please enter a valid email address</p>}
@@ -63,6 +86,7 @@ export default function Login() {
             onChange={(event) =>
               handleInputChange("password", event.target.value)
             }
+            onBlur={() => handleInputBlur("password")}
           />
         </div>
       </div>
