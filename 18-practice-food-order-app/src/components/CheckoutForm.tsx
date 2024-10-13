@@ -52,7 +52,8 @@ export default function CheckoutForm() {
         data as CustomerType,
       );
       console.log(response);
-      context!.dispatch({ type: "RESET" });
+      context!.dispatch({ type: "SUCCESS", open: true });
+      closeForm();
     } catch (error) {
       console.log(error);
     }

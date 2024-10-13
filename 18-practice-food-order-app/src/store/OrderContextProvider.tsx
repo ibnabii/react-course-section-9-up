@@ -9,12 +9,14 @@ type OrderStateType = {
   mealOrderList: MealOrder[];
   cartModalOpened: boolean;
   orderFormModalOpened: boolean;
+  succesModalOpened: boolean;
 };
 
 const initialOrderState: OrderStateType = {
   mealOrderList: [],
   cartModalOpened: false,
   orderFormModalOpened: false,
+  succesModalOpened: false,
 };
 
 type AddMealActionType = {
@@ -28,7 +30,7 @@ type RemoveMealActionType = {
 };
 
 type UIActionType = {
-  type: "CART" | "FORM";
+  type: "CART" | "FORM" | "SUCCESS";
   open: boolean;
 };
 
@@ -57,6 +59,12 @@ function orderReducer(
     return {
       ...state,
       orderFormModalOpened: action.open,
+    };
+
+  if (action.type === "SUCCESS")
+    return {
+      ...state,
+      succesModalOpened: action.open,
     };
 
   if (action.type === "ADD") {

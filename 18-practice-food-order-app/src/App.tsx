@@ -5,6 +5,7 @@ import OrderContextProvider from "./store/OrderContextProvider.tsx";
 import Cart from "./components/Cart.tsx";
 import CheckoutForm from "./components/CheckoutForm.tsx";
 import useFetch from "./hooks/useFetch.ts";
+import Success from "./components/Success.tsx";
 
 async function fetchMeals() {
   const response = await fetch("http://localhost:3000/meals");
@@ -35,6 +36,7 @@ function App() {
 
       <Cart />
       <CheckoutForm />
+      <Success />
     </OrderContextProvider>
   );
 }
