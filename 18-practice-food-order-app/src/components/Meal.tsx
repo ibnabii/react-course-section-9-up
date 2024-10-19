@@ -1,5 +1,6 @@
 import { OrderContext } from "../store/OrderContextProvider.tsx";
 import { useContext } from "react";
+import { currencyFormatter } from "../util/formatting.ts";
 
 export type MealType = {
   id: string;
@@ -29,12 +30,18 @@ export default function Meal({ meal }: MealProps): JSX.Element {
           src={`http://localhost:3000/${meal.image}`}
           alt="Tasty image of a meal"
         />
-        <h3>{meal.name}</h3>
-        <p className="meal-item-price">{meal.price}</p>
-        <p className="meal-item-description">{meal.description}</p>
-        <button className="button" onClick={handleAddToCart}>
-          Add to cart
-        </button>
+        <div>
+          <h3>{meal.name}</h3>
+          <p className="meal-item-price">
+            {currencyFormatter.format(Number(meal.price))}
+          </p>
+          <p className="meal-item-description">{meal.description}</p>
+        </div>
+        <p className="meal-item-actions">
+          <button className="button" onClick={handleAddToCart}>
+            Add to cart
+          </button>
+        </p>
       </article>
     </li>
   );

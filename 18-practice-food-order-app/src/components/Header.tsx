@@ -23,9 +23,11 @@ export default function Header() {
         <img src={headerImg} alt="logo" id="title" />
         <h1>Reactfood</h1>
       </div>
-      <button type="button" className="text-button" onClick={openCart}>
-        Cart ({numberOfItems})
-      </button>
+      <nav>
+        <button type="button" className="text-button" onClick={openCart}>
+          Cart ({numberOfItems})
+        </button>
+      </nav>
     </header>
   );
 }

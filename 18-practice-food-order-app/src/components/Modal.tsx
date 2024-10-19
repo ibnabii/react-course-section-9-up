@@ -16,6 +16,17 @@ function Modal({
     }
   }, [open]);
 
+  // alternative approach to closing with cleanup function:
+  //
+  // useEffect(() => {
+  //   const modal = dialog.current;
+  //   if (open) {
+  //     modal?.showModal();
+  //   }
+  //
+  //   return () => modal?.close();
+  // }, [open]);
+
   return createPortal(
     <dialog className="modal" ref={dialog} onClose={onClose}>
       {open ? children : null}
