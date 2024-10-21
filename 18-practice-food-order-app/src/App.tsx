@@ -1,12 +1,12 @@
 import Header from "./components/Header.tsx";
-import Meal, { MealType } from "./components/Meal.tsx";
+// import Meal, { MealType } from "./components/Meal.tsx";
 // import meals from "../backend/data/available-meals.json";
 import OrderContextProvider from "./store/OrderContextProvider.tsx";
 import Cart from "./components/Cart.tsx";
 import CheckoutForm from "./components/CheckoutForm.tsx";
 // import useFetch from "./hooks/useFetch.ts";
 import Success from "./components/Success.tsx";
-import { useHttp } from "./hooks/useHttp.ts";
+// import { useHttp } from "./hooks/useHttp.ts";
 import Meals from "./components/Meals.tsx";
 
 // async function fetchMeals() {

@@ -1,5 +1,6 @@
 import { useHttp } from "../hooks/useHttp.ts";
 import Meal, { MealType } from "./Meal.tsx";
+import Error from "./Error.tsx";
 
 const requestConfig = {};
 export default function Meals() {
@@ -13,6 +14,9 @@ export default function Meals() {
     return <p className="center">Loading available meals...</p>;
   }
 
+  if (error) {
+    return <Error title="Error" message={error} />;
+  }
   return (
     <ul id="meals">
       {meals!.map((meal) => (

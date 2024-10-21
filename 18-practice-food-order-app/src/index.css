@@ -245,6 +245,24 @@ h1 {
   animation: fade-slide-up 0.3s ease-out forwards;
 }
 
+.error {
+  background-color: #a95d76;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  width: 80%;
+  max-width: 40rem;
+  animation: fade-slide-up 0.3s ease-out forwards;
+  color: #1f1a09
+}
+.error-container{
+  padding: 3rem 10%;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically (optional) */
+  /*height: 100vh; !* Full viewport height to ensure vertical centering *!*/
+}
 .modal::backdrop {
   background-color: rgba(0, 0, 0, 0.55);
 }
