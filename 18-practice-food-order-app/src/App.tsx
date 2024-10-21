@@ -7,6 +7,7 @@ import CheckoutForm from "./components/CheckoutForm.tsx";
 // import useFetch from "./hooks/useFetch.ts";
 import Success from "./components/Success.tsx";
 import { useHttp } from "./hooks/useHttp.ts";
+import Meals from "./components/Meals.tsx";
 
 // async function fetchMeals() {
 //   const response = await fetch("http://localhost:3000/meals");
@@ -19,32 +20,13 @@ import { useHttp } from "./hooks/useHttp.ts";
 //   return resData;
 // }
 
-const requestConfig = {};
-
 function App() {
   // const { isFetching, error, fetchedData: meals } = useFetch(fetchMeals);
-  const {
-    data: meals,
-    isLoading: isFetching,
-    error,
-  } = useHttp<MealType[]>("http://localhost:3000/meals", requestConfig, []);
 
-  if (isFetching) {
-    return <p className="center">Loading available meals...</p>;
-  }
   return (
     <OrderContextProvider>
       <Header />
-      {/*{error && <p>{error.message}</p>}*/}
-      {error && <p>{error}</p>}
-      {!isFetching && !error && (
-        <ul id="meals">
-          {meals!.map((meal) => (
-            <Meal meal={meal} key={meal.id} />
-          ))}
-        </ul>
-      )}
-
+      <Meals />
       <Cart />
       <CheckoutForm />
       <Success />
