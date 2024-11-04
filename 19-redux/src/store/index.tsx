@@ -2,10 +2,11 @@ import { createStore, Reducer } from "redux";
 
 export type StateType = {
   counter: number;
+  showCounter: boolean;
 };
 
 type SimpleActionType = {
-  type: "INCREMENT" | "DECREMENT";
+  type: "INCREMENT" | "DECREMENT" | "TOGGLE_COUNTER";
 };
 
 type IncreaseActionType = {
@@ -15,16 +16,21 @@ type IncreaseActionType = {
 
 type ActionType = SimpleActionType | IncreaseActionType;
 
-const INITIAL_STATE: StateType = { counter: 0 };
+const INITIAL_STATE: StateType = { counter: 0, showCounter: true };
 
 const counterReducer: Reducer<StateType, ActionType> = (
   state = INITIAL_STATE,
   action,
 ) => {
-  if (action.type === "INCREMENT") return { counter: state.counter + 1 };
-  if (action.type === "DECREMENT") return { counter: state.counter - 1 };
+  if (action.type === "INCREMENT")
+    return { ...state, counter: state.counter + 1 };
+  if (action.type === "DECREMENT")
+    return { ...state, counter: state.counter - 1 };
   if (action.type === "INCREASE")
-    return { counter: state.counter + action.amount };
+    return { ...state, counter: state.counter + action.amount };
+
+  if (action.type === "TOGGLE_COUNTER")
+    return { ...state, showCounter: !state.showCounter };
   return state;
 };
 
