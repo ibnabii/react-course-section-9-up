@@ -10,6 +10,19 @@ const Products = () => {
           title="Test"
           price={6}
           description="This is a first product - amazing!"
+          key={1}
+        />
+        <ProductItem
+          title="Another one"
+          price={10}
+          description="Pretty expensive, huh?"
+          key={2}
+        />
+        <ProductItem
+          title="Cheap product"
+          price={1}
+          description="Not very usefull"
+          key={3}
         />
       </ul>
     </section>
