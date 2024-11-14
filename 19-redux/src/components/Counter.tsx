@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { StateType, DispatchType, counterActions } from "../store";
+import { DispatchType, RootState, counterActions } from "../store";
 
 import classes from "./Counter.module.css";
 // For class based version:
@@ -9,10 +9,19 @@ import classes from "./Counter.module.css";
 
 const Counter = () => {
   const dispatch: DispatchType = useDispatch();
-  const { counter, showCounter } = useSelector((state: StateType) => ({
-    counter: state.counter,
-    showCounter: state.showCounter,
-  }));
+  // // This gives warning
+  // const { counter, showCounter } = useSelector((state: RootState) => ({
+  //   counter: state.counter.counter,
+  //   showCounter: state.counter.showCounter,
+  // }));
+  // // Use separate useSelector calls to avoid creating a new object each time
+  const counter = useSelector((state: RootState) => state.counter.counter);
+  const showCounter = useSelector(
+    (state: RootState) => state.counter.showCounter,
+  );
+  // or if i want entire counter:
+  // const counter = useSelector((state: RootState) => state.counter);
+  // then usage: counter.counter and counter.showCounter
 
   const toggleCounterHandler = () => {
     // dispatch({ type: "TOGGLE_COUNTER" });
