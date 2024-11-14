@@ -23,23 +23,22 @@ const cartSlice = createSlice({
         (item) => item.title == action.payload.title,
       );
       if (oldCartItem) {
-        state.products = state.products.map((item) => {
-          if (item.title == action.payload.title)
-            return { ...item, quantity: item.quantity + 1 };
-          else return item;
-        });
-      } else
-        state.products = [
-          ...state.products,
-          { ...action.payload, quantity: 1 },
-        ];
+        oldCartItem.quantity++;
+      } else state.products.push({ ...action.payload, quantity: 1 });
     },
     removeFromCart(state, action: PayloadAction<{ title: string }>) {
-      const newProducts = state.products.map((item) => {
-        if (item.title !== action.payload.title) return item;
-        return { ...item, quantity: item.quantity - 1 };
-      });
-      state.products = newProducts.filter((item) => item.quantity > 0);
+      // const newProducts = state.products.map((item) => {
+      //   if (item.title !== action.payload.title) return item;
+      //   return { ...item, quantity: item.quantity - 1 };
+      // });
+      // state.products = newProducts.filter((item) => item.quantity > 0);
+      const existingItem = state.products.find(
+        (item) => item.title == action.payload.title,
+      );
+      if (existingItem) {
+        existingItem.quantity--;
+      }
+      state.products = state.products.filter((item) => item.quantity > 0);
     },
   },
 });
