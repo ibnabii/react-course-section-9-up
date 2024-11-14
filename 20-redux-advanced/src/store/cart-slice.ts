@@ -7,12 +7,10 @@ type CartItemType = {
 };
 
 type CartStateType = {
-  showCart: boolean;
   products: CartItemType[];
 };
 
 const CART_INITIAL_STATE: CartStateType = {
-  showCart: false,
   products: [],
 };
 
@@ -20,9 +18,6 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: CART_INITIAL_STATE,
   reducers: {
-    toggleCart(state) {
-      state.showCart = !state.showCart;
-    },
     addToCart(state, action: PayloadAction<{ title: string; price: number }>) {
       const oldCartItem = state.products.find(
         (item) => item.title == action.payload.title,

@@ -1,6 +1,6 @@
 import classes from "./CartItem.module.css";
 import { useDispatch } from "react-redux";
-import { cartActions } from "../../store/cart.ts";
+import { cartActions } from "../../store/cart-slice.ts";
 
 type ItemType = {
   title: string;
