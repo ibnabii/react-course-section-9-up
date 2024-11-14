@@ -1,7 +1,8 @@
 import classes from "./Auth.module.css";
-import { authActions, DispatchType } from "../store";
+import { DispatchType } from "../store";
 import { useDispatch } from "react-redux";
 import { FormEvent } from "react";
+import { authActions } from "../store/auth.ts";
 
 const Auth = () => {
   const dispatch: DispatchType = useDispatch();
