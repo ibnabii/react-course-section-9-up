@@ -7,7 +7,8 @@ import Products from "./components/Shop/Products";
 import Notification from "./components/UI/Notification.tsx";
 
 import { DispatchType, RootState } from "./store";
-import { sendCartData } from "./store/cart-slice.ts";
+
+import { sendCartData } from "./store/cart-actions.ts";
 
 function App() {
   const showCart = useSelector((state: RootState) => state.ui.showCart);

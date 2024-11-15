@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./CartButton.module.css";
 import { RootState } from "../../store";
-import { itemsCount } from "../../store/cart-slice.ts";
 import { uiActions } from "../../store/ui-slice.ts";
+import { itemsCount } from "../../store/cart-actions.ts";
 
 const CartButton = () => {
   const dispatch = useDispatch();
