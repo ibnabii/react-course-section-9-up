@@ -40,6 +40,9 @@ const cartSlice = createSlice({
       }
       state.products = state.products.filter((item) => item.quantity > 0);
     },
+    replaceCart(state, action: PayloadAction<CartStateType>) {
+      Object.assign(state, action.payload);
+    },
   },
 });
 

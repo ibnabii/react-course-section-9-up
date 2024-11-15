@@ -8,7 +8,7 @@ import Notification from "./components/UI/Notification.tsx";
 
 import { DispatchType, RootState } from "./store";
 
-import { sendCartData } from "./store/cart-actions.ts";
+import { fetchCartData, sendCartData } from "./store/cart-actions.ts";
 
 function App() {
   const showCart = useSelector((state: RootState) => state.ui.showCart);
@@ -16,6 +16,10 @@ function App() {
   const cart = useSelector((state: RootState) => state.cart);
   const dispatch: DispatchType = useDispatch();
   const isInitial = useRef<boolean>(true);
+
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isInitial.current) {
