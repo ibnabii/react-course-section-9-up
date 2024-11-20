@@ -16,13 +16,14 @@ import ProductDetailsPage from "./pages/ProductDetails.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/products", element: <ProductsPage /> },
-      { path: "/products/:productId", element: <ProductDetailsPage /> },
+      { path: "", element: <HomePage /> },
+      // { index: true, element: <HomePage /> }, // alternative way
+      { path: "products", element: <ProductsPage /> },
+      { path: "products/:productId", element: <ProductDetailsPage /> },
     ],
   },
 ]);
