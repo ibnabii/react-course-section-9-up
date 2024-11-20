@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/Home.tsx";
 import ProductsPage from "./pages/Products.tsx";
 import RootLayout from "./pages/Root.tsx";
+import ErrorPage from "./pages/Error.tsx";
 
 // const routeDefinitions = createRoutesFromElements(
 //   <Route>
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
