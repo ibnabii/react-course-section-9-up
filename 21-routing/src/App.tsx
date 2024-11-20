@@ -4,6 +4,7 @@ import HomePage from "./pages/Home.tsx";
 import ProductsPage from "./pages/Products.tsx";
 import RootLayout from "./pages/Root.tsx";
 import ErrorPage from "./pages/Error.tsx";
+import ProductDetailsPage from "./pages/ProductDetails.tsx";
 
 // const routeDefinitions = createRoutesFromElements(
 //   <Route>
@@ -19,14 +20,9 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/products",
-        element: <ProductsPage />,
-      },
+      { path: "/", element: <HomePage /> },
+      { path: "/products", element: <ProductsPage /> },
+      { path: "/products/:productId", element: <ProductDetailsPage /> },
     ],
   },
 ]);
