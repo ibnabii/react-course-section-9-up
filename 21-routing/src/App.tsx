@@ -16,7 +16,7 @@ import ProductDetailsPage from "./pages/ProductDetails.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
