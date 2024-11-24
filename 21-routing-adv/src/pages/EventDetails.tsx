@@ -1,5 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 
+export type EventType = {
+  id: string;
+  title: string;
+  image: string;
+  date: string;
+};
+
 export type EventRouteParams = {
   eventId: string;
 };

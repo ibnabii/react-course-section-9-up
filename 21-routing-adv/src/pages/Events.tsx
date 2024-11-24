@@ -1,24 +1,27 @@
-import { Link } from "react-router-dom";
+import EventsList from "../components/EventsList";
+import { EventType } from "./EventDetails.tsx";
+import { useLoaderData } from "react-router-dom";
 
-const EVENTS = [
-  { id: "e1", title: "First event" },
-  { id: "e2", title: "Second event" },
-  { id: "e3", title: "Third event" },
-];
+type LoaderResponseType =
+  | { isError: boolean; message: string }
+  | { events: EventType[] };
 
 function EventsPage() {
+  const data = useLoaderData() as LoaderResponseType;
+  console.log(data);
+  if ("isError" in data) return <p>{data.message}</p>;
+  const events: EventType[] = data.events;
   return (
     <>
-      <h1>Events List Page</h1>
-      <ul>
-        {EVENTS.map((event) => (
-          <li key={event.id}>
-            <Link to={event.id}>{event.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <EventsList events={events} />
     </>
   );
 }
 
 export default EventsPage;
+
+export async function loader(): Promise<LoaderResponseType> {
+  const response = await fetch("http://localhost:8080/events");
+  if (!response.ok) return { isError: true, message: "Could not fetch events" };
+  return await response.json();
+}
