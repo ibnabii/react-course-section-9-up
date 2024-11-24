@@ -3,13 +3,13 @@ import { EventType } from "./EventDetails.tsx";
 import { useLoaderData } from "react-router-dom";
 
 type LoaderResponseType =
-  | { isError: boolean; message: string }
-  | { events: EventType[] };
+  // | { isError: boolean; message: string }
+  { events: EventType[] };
 
 function EventsPage() {
   const data = useLoaderData() as LoaderResponseType;
-  console.log(data);
-  if ("isError" in data) return <p>{data.message}</p>;
+  // console.log(data);
+  // if ("isError" in data) return <p>{data.message}</p>;
   const events: EventType[] = data.events;
   return (
     <>
@@ -22,6 +22,9 @@ export default EventsPage;
 
 export async function loader(): Promise<LoaderResponseType> {
   const response = await fetch("http://localhost:8080/events");
-  if (!response.ok) return { isError: true, message: "Could not fetch events" };
+  if (!response.ok)
+    throw new Response(JSON.stringify({ message: "Could not fetch events" }), {
+      status: 500,
+    });
   return await response.json();
 }
