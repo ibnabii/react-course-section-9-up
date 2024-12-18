@@ -1,27 +1,36 @@
-import { Link, useParams } from "react-router-dom";
-
-export type EventType = {
-  id: string;
-  title: string;
-  image: string;
-  date: string;
-};
+import { useLoaderData, LoaderFunction } from "react-router-dom";
+import EventItem, { EventType } from "../components/EventItem.tsx";
 
 export type EventRouteParams = {
   eventId: string;
 };
 
 function EventDetailsPage() {
-  const params = useParams<EventRouteParams>();
-  return (
-    <>
-      <h1>Event Details Page</h1>
-      <p>Event ID: {params.eventId}</p>
-      <p>
-        <Link to="edit">Edit</Link>
-      </p>
-    </>
-  );
+  const data = useLoaderData() as { event: EventType };
+  return <EventItem event={data.event} />;
 }
 
 export default EventDetailsPage;
+
+// type LoaderArgs = {
+//   request: Request;
+//   params: EventRouteParams;
+// };
+//
+type LoaderResponseType = {event: EventType}
+
+export const loader: LoaderFunction = async ({ params }): Promise<LoaderResponseType> => {
+  const id = params.eventId;
+  const response = await fetch("http://localhost:8080/events/" + id);
+  if (!response.ok) {
+    throw new Response(
+      JSON.stringify({
+        message: "Could not fetch details for selected event.",
+      }),
+      {
+        status: 500,
+      },
+    );
+  }
+  return await response.json();
+}

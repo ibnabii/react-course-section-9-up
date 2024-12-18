@@ -3,7 +3,9 @@ import RootLayout from "./pages/Root.tsx";
 import ErrorPage from "./pages/Error.tsx";
 import EventsPage, { loader as eventsLoader } from "./pages/Events.tsx";
 import NewEventPage from "./pages/NewEvent.tsx";
-import EventDetailsPage from "./pages/EventDetails.tsx";
+import EventDetailsPage, {
+  loader as eventDetailsLoader,
+} from "./pages/EventDetails.tsx";
 import EditEventPage from "./pages/EditEvent.tsx";
 import HomePage from "./pages/Home.tsx";
 import EventLayout from "./pages/EventLayout.tsx";
@@ -22,7 +24,11 @@ function App() {
           children: [
             { index: true, element: <EventsPage />, loader: eventsLoader },
             { path: "new", element: <NewEventPage /> },
-            { path: ":eventId", element: <EventDetailsPage /> },
+            {
+              path: ":eventId",
+              element: <EventDetailsPage />,
+              loader: eventDetailsLoader,
+            },
             { path: ":eventId/edit", element: <EditEventPage /> },
           ],
         },

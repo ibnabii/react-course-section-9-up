@@ -1,10 +1,8 @@
 import EventsList from "../components/EventsList";
-import { EventType } from "./EventDetails.tsx";
 import { useLoaderData } from "react-router-dom";
+import { EventType } from "../components/EventItem.tsx";
 
-type LoaderResponseType =
-  // | { isError: boolean; message: string }
-  { events: EventType[] };
+type LoaderResponseType = { events: EventType[] };
 
 function EventsPage() {
   const data = useLoaderData() as LoaderResponseType;
@@ -26,5 +24,6 @@ export async function loader(): Promise<LoaderResponseType> {
     throw new Response(JSON.stringify({ message: "Could not fetch events" }), {
       status: 500,
     });
+
   return await response.json();
 }
