@@ -1,12 +1,14 @@
-import { EventRouteParams } from "./EventDetails.tsx";
-import { useParams } from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
+import EventForm from "../components/EventForm.tsx";
+import {LoaderResponseType} from "./EventDetails.tsx";
 
 function EditEventPage() {
-  const params = useParams<EventRouteParams>();
+  const data = useRouteLoaderData("event-detail") as LoaderResponseType
+
   return (
     <>
       <h1>Edit Event Page</h1>
-      <p>Event id: {params.eventId}</p>
+      <EventForm event={data.event} />
     </>
   );
 }

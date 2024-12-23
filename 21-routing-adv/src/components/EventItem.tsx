@@ -9,7 +9,7 @@ export type EventType = {
   description?: string;
 };
 
-type EventItemProps = {
+export type EventItemProps = {
   event: EventType;
 };
 

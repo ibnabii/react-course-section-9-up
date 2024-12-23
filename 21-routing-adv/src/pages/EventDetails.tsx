@@ -1,4 +1,4 @@
-import { useLoaderData, LoaderFunction } from "react-router-dom";
+import {LoaderFunction, useRouteLoaderData} from "react-router-dom";
 import EventItem, { EventType } from "../components/EventItem.tsx";
 
 export type EventRouteParams = {
@@ -6,7 +6,8 @@ export type EventRouteParams = {
 };
 
 function EventDetailsPage() {
-  const data = useLoaderData() as { event: EventType };
+  // const data = useLoaderData() as { event: EventType };
+    const data = useRouteLoaderData("event-detail") as LoaderResponseType
   return <EventItem event={data.event} />;
 }
 
@@ -17,7 +18,7 @@ export default EventDetailsPage;
 //   params: EventRouteParams;
 // };
 //
-type LoaderResponseType = {event: EventType}
+export type LoaderResponseType = {event: EventType}
 
 export const loader: LoaderFunction = async ({ params }): Promise<LoaderResponseType> => {
   const id = params.eventId;

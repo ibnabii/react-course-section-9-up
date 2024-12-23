@@ -1,11 +1,1 @@
-{
-  "events": [
-    {
-      "id": "e1",
-      "title": "A dummy event",
-      "date": "2023-02-22",
-      "image": "https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg",
-      "description": "Join this amazing event and connect with fellow developers."
-    }
-  ]
-}
+{"events":[{"title":"asdasdfgeds","description":"asdas","image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX6iGsAND9X7LrRBgY0w5D8Af83wdCQChGqwKejPhVtKi4KaAExOsTAUJUMJwuGj8ceYc&usqp=CAU","date":"2024-12-12","id":"7ad1612d-4fb3-43da-9084-2735a4e75dba"},{"title":"dsfsdf","description":"asdafasgds","image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZYawmZO2lTRjj4VyofNin-HJ-xs7vXNHfDzrPJgbVEL31ko0_WIKobqyDqiJQZMHR6Zg&usqp=CAU","date":"2024-12-06","id":"28d4917e-fc52-4a69-a789-689c4022e0e6"},{"title":"test","description":"sdafsdfsdfsd","image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX6iGsAND9X7LrRBgY0w5D8Af83wdCQChGqwKejPhVtKi4KaAExOsTAUJUMJwuGj8ceYc&usqp=CAU","date":"2025-01-01","id":"7c8b78e4-fe5a-4bf6-bd45-83fe66ec6c54"},{"title":"Święta ","description":"Święta święta i po świętach\n\nŁódź i tak nie zrozumie :)\"","image":"https://thumbs.dreamstime.com/z/xmass-3014270.jpg","date":"2024-12-25","id":"a50c41f5-2e14-49e6-804a-cf0dbc37f007"},{"id":"e1","title":"A dummy event","date":"2023-02-22","image":"https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg","description":"Join this amazing event and connect with fellow developers."}]}

@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/Root.tsx";
 import ErrorPage from "./pages/Error.tsx";
 import EventsPage, { loader as eventsLoader } from "./pages/Events.tsx";
-import NewEventPage from "./pages/NewEvent.tsx";
+import NewEventPage, {action as newEventAction} from "./pages/NewEvent.tsx";
 import EventDetailsPage, {
   loader as eventDetailsLoader,
 } from "./pages/EventDetails.tsx";
@@ -23,13 +23,23 @@ function App() {
           element: <EventLayout />,
           children: [
             { index: true, element: <EventsPage />, loader: eventsLoader },
-            { path: "new", element: <NewEventPage /> },
+            { path: "new", element: <NewEventPage />, action: newEventAction },
             {
               path: ":eventId",
-              element: <EventDetailsPage />,
+              id: "event-detail",
               loader: eventDetailsLoader,
-            },
-            { path: ":eventId/edit", element: <EditEventPage /> },
+              children: [
+                {
+                  index: true,
+                  element: <EventDetailsPage/>,
+                },
+                {
+                  path: "edit",
+                  element: <EditEventPage/>
+                },
+              ]
+
+            }
           ],
         },
       ],
