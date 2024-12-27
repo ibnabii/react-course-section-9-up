@@ -28,6 +28,11 @@ export const action: ActionFunction = async ({request })=>  {
         body: JSON.stringify(eventData)
     });
 
+    // handle validation error from backend
+    if (response.status === 422) {
+        return response;
+    }
+
     if (!response.ok) {
         throw json({message: "Could not save the event", status: 500});
     }

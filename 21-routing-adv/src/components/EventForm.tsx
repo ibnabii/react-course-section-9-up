@@ -1,4 +1,4 @@
-import {Form, useNavigate, useNavigation} from 'react-router-dom';
+import {Form, useActionData, useNavigate, useNavigation} from 'react-router-dom';
 
 import classes from './EventForm.module.css';
 import {EventType} from "./EventItem.tsx";
@@ -8,7 +8,20 @@ type EventFormProps = {
     event? : EventType
 }
 
+type ErrorsType = {
+    image?: string;
+    description?: string;
+    title?: string;
+    date?: string;
+}
+type ServerResponseType = {
+    message: string,
+    errors?: ErrorsType
+}
+
 function EventForm({ method, event }: EventFormProps): JSX.Element {
+  const data = useActionData() as ServerResponseType;
+
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state == "submitting"
@@ -20,6 +33,9 @@ function EventForm({ method, event }: EventFormProps): JSX.Element {
 
   return (
     <Form method="post" className={classes.form}>
+        {data && data.errors && <ul>
+            {Object.values(data.errors).map(err => (<li key={err}>{err}</li>))}
+        </ul> }
       <p>
         <label htmlFor="title">Title</label>
         <input id="title" type="text" name="title" required defaultValue={event ? event.title : ''} />
