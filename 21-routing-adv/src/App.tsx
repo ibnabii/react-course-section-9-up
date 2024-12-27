@@ -11,6 +11,7 @@ import EditEventPage from "./pages/EditEvent.tsx";
 import HomePage from "./pages/Home.tsx";
 import EventLayout from "./pages/EventLayout.tsx";
 import { action as manipulateEventAction } from "./components/EventForm.tsx"
+import NewsletterPage, {action as newsletterAction } from "./pages/Newsletter.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -45,6 +46,11 @@ function App() {
 
             }
           ],
+        },
+        {
+          path: 'newsletter',
+          element: <NewsletterPage />,
+          action: newsletterAction,
         },
       ],
     },
