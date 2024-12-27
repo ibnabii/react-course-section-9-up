@@ -5,6 +5,7 @@ import EventsPage, { loader as eventsLoader } from "./pages/Events.tsx";
 import NewEventPage, {action as newEventAction} from "./pages/NewEvent.tsx";
 import EventDetailsPage, {
   loader as eventDetailsLoader,
+    action as deleteEventAction,
 } from "./pages/EventDetails.tsx";
 import EditEventPage from "./pages/EditEvent.tsx";
 import HomePage from "./pages/Home.tsx";
@@ -32,6 +33,7 @@ function App() {
                 {
                   index: true,
                   element: <EventDetailsPage/>,
+                  action: deleteEventAction
                 },
                 {
                   path: "edit",

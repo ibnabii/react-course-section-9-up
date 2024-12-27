@@ -1,9 +1,5 @@
-import {LoaderFunction, useRouteLoaderData} from "react-router-dom";
+import {LoaderFunction, ActionFunction, useRouteLoaderData, redirect} from "react-router-dom";
 import EventItem, { EventType } from "../components/EventItem.tsx";
-
-export type EventRouteParams = {
-  eventId: string;
-};
 
 function EventDetailsPage() {
   // const data = useLoaderData() as { event: EventType };
@@ -34,4 +30,19 @@ export const loader: LoaderFunction = async ({ params }): Promise<LoaderResponse
     );
   }
   return await response.json();
+}
+
+export const action: ActionFunction = async ({params, request}) => {
+  const response = await fetch("http://localhost:8080/events/" + params.eventId, {method: request.method});
+  if (!response.ok) {
+    throw new Response(
+      JSON.stringify({
+        message: "Could not delete event.",
+      }),
+      {
+        status: 500,
+      },
+    );
+  }
+  return redirect("/events")
 }
