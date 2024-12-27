@@ -1,7 +1,13 @@
+import PageContent from "../components/PageContent.tsx";
+
 function HomePage() {
   return (
     <>
-      <h1>Home Page</h1>
+
+        <PageContent title={"Welcome"} >
+            <p>Browse our events</p>
+        </PageContent>
+
     </>
   );
 }
