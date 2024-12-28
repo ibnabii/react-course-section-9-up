@@ -1,6 +1,12 @@
-import classes from './PageContent.module.css';
+import classes from "./PageContent.module.css";
+import { ReactNode } from "react";
 
-function PageContent({ title, children }) {
+type PageContentProps = {
+  title: string;
+  children: ReactNode;
+};
+
+function PageContent({ title, children }: PageContentProps) {
   return (
     <div className={classes.content}>
       <h1>{title}</h1>

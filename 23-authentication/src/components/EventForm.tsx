@@ -3,21 +3,38 @@ import {
   useNavigate,
   useNavigation,
   useActionData,
-  json,
-  redirect
-} from 'react-router-dom';
+  redirect,
+  ActionFunction,
+} from "react-router-dom";
 
-import classes from './EventForm.module.css';
+import classes from "./EventForm.module.css";
+import { EventType } from "./EventItem.tsx";
 
-function EventForm({ method, event }) {
-  const data = useActionData();
+type EventFormProps = {
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  event?: EventType;
+};
+
+type ErrorsType = {
+  image?: string;
+  description?: string;
+  title?: string;
+  date?: string;
+};
+type ServerResponseType = {
+  message: string;
+  errors?: ErrorsType;
+};
+
+function EventForm({ method, event }: EventFormProps) {
+  const data = useActionData() as ServerResponseType;
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const isSubmitting = navigation.state === 'submitting';
+  const isSubmitting = navigation.state === "submitting";
 
   function cancelHandler() {
-    navigate('..');
+    navigate("..");
   }
 
   return (
@@ -36,7 +53,7 @@ function EventForm({ method, event }) {
           type="text"
           name="title"
           required
-          defaultValue={event ? event.title : ''}
+          defaultValue={event ? event.title : ""}
         />
       </p>
       <p>
@@ -46,7 +63,7 @@ function EventForm({ method, event }) {
           type="url"
           name="image"
           required
-          defaultValue={event ? event.image : ''}
+          defaultValue={event ? event.image : ""}
         />
       </p>
       <p>
@@ -56,7 +73,7 @@ function EventForm({ method, event }) {
           type="date"
           name="date"
           required
-          defaultValue={event ? event.date : ''}
+          defaultValue={event ? event.date : ""}
         />
       </p>
       <p>
@@ -64,9 +81,9 @@ function EventForm({ method, event }) {
         <textarea
           id="description"
           name="description"
-          rows="5"
+          rows={5}
           required
-          defaultValue={event ? event.description : ''}
+          defaultValue={event ? event.description : ""}
         />
       </p>
       <div className={classes.actions}>
@@ -74,7 +91,7 @@ function EventForm({ method, event }) {
           Cancel
         </button>
         <button disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting...' : 'Save'}
+          {isSubmitting ? "Submitting..." : "Save"}
         </button>
       </div>
     </Form>
@@ -83,28 +100,28 @@ function EventForm({ method, event }) {
 
 export default EventForm;
 
-export async function action({ request, params }) {
+export const action: ActionFunction = async ({ request, params }) => {
   const method = request.method;
   const data = await request.formData();
 
   const eventData = {
-    title: data.get('title'),
-    image: data.get('image'),
-    date: data.get('date'),
-    description: data.get('description'),
+    title: data.get("title"),
+    image: data.get("image"),
+    date: data.get("date"),
+    description: data.get("description"),
   };
 
-  let url = 'http://localhost:8080/events';
+  let url = "http://localhost:8080/events";
 
-  if (method === 'PATCH') {
+  if (method === "PATCH") {
     const eventId = params.eventId;
-    url = 'http://localhost:8080/events/' + eventId;
+    url = "http://localhost:8080/events/" + eventId;
   }
 
   const response = await fetch(url, {
     method: method,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(eventData),
   });
@@ -114,9 +131,10 @@ export async function action({ request, params }) {
   }
 
   if (!response.ok) {
-    throw json({ message: 'Could not save event.' }, { status: 500 });
+    throw new Response(JSON.stringify({ message: "Could not save event." }), {
+      status: 500,
+    });
   }
 
-  return redirect('/events');
-}
-
+  return redirect("/events");
+};

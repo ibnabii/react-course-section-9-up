@@ -3,8 +3,15 @@ import MainNavigation from '../components/MainNavigation';
 
 import PageContent from '../components/PageContent';
 
+type MyError = {
+  status: number;
+  data: {
+    message: string;
+  };
+};
+
 function ErrorPage() {
-  const error = useRouteError();
+  const error = useRouteError() as MyError;
 
   let title = 'An error occurred!';
   let message = 'Something went wrong!';

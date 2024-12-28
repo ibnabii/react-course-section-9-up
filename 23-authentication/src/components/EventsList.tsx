@@ -1,9 +1,14 @@
 // import { useLoaderData } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import classes from './EventsList.module.css';
+import classes from "./EventsList.module.css";
+import { EventType } from "./EventItem.tsx";
 
-function EventsList({events}) {
+type EventsListProps = {
+  events: EventType[];
+};
+
+function EventsList({ events }: EventsListProps) {
   // const events = useLoaderData();
 
   return (
