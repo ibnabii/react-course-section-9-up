@@ -9,6 +9,7 @@ import {
 
 import classes from "./EventForm.module.css";
 import { EventType } from "./EventItem.tsx";
+import { getAuthToken } from "../util/auth.ts";
 
 type EventFormProps = {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -122,6 +123,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     method: method,
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + getAuthToken(),
     },
     body: JSON.stringify(eventData),
   });
