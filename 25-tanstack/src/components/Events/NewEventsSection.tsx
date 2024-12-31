@@ -1,52 +1,31 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import LoadingIndicator from "../UI/LoadingIndicator.tsx";
 import ErrorBlock from "../UI/ErrorBlock.tsx";
 import EventItem from "./EventItem.tsx";
 
+import { fetchEvents, CustomError } from "../../util/http.ts";
+
 export default function NewEventsSection() {
-  const [data, setData] = useState();
-  const [error, setError] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isPending, isError, error } = useQuery({
+    queryFn: fetchEvents,
+    queryKey: ["events"],
+  });
 
-  useEffect(() => {
-    async function fetchEvents() {
-      setIsLoading(true);
-      const response = await fetch("http://localhost:3000/events");
-
-      if (!response.ok) {
-        const error = new Error("An error occurred while fetching the events");
-        error.code = response.status;
-        error.info = await response.json();
-        throw error;
-      }
-
-      const { events } = await response.json();
-
-      return events;
-    }
-
-    fetchEvents()
-      .then((events) => {
-        setData(events);
-      })
-      .catch((error) => {
-        setError(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const customError = error as CustomError;
 
   let content;
 
-  if (isLoading) {
+  if (isPending) {
     content = <LoadingIndicator />;
   }
 
-  if (error) {
+  if (isError) {
     content = (
-      <ErrorBlock title="An error occurred" message="Failed to fetch events" />
+      <ErrorBlock
+        title="An error occurred"
+        message={customError.info?.message || "Failed to fetch events."}
+      />
     );
   }
 
