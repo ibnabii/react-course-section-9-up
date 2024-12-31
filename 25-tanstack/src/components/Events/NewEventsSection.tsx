@@ -10,6 +10,10 @@ export default function NewEventsSection() {
   const { data, isPending, isError, error } = useQuery({
     queryFn: fetchEvents,
     queryKey: ["events"],
+    // only send request again after 5  secs (if component is re-rendered faster, don't), defaults to 0
+    staleTime: 5000,
+    // how long keep data in cache (default: 5 minutes)
+    // gcTime: 30000,
   });
 
   const customError = error as CustomError;

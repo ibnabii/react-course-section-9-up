@@ -16,8 +16,17 @@ export class CustomError extends Error {
   }
 }
 
-export async function fetchEvents() {
-  const response = await fetch("http://localhost:3000/events");
+type FetchEventsArgs = {
+  signal: AbortSignal | null;
+  searchTerm?: string;
+};
+
+export async function fetchEvents({ signal, searchTerm }: FetchEventsArgs) {
+  let url = "http://localhost:3000/events";
+  if (searchTerm) {
+    url += "?search=" + searchTerm;
+  }
+  const response = await fetch(url, { signal: signal });
 
   if (!response.ok) {
     const error = new CustomError(
