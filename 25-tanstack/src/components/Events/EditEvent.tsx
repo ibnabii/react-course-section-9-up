@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import LoadingIndicator from "../UI/LoadingIndicator.tsx";
 import ErrorBlock from "../UI/ErrorBlock.tsx";
+import { EventType } from "./EventItem.tsx";
 
 type EditEventRouteParams = {
   id: string;
@@ -33,24 +34,42 @@ export default function EditEvent() {
   });
   const customFetchError = fetchError as CustomError;
 
-  const {
-    mutate,
-    isError: updateIsError,
-    isPending: updateIsPending,
-    error,
-  } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: updateEvent,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["events"],
-      });
-      navigate("../");
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["events"],
+    //   });
+
+    // },
+    // this one executes immediatelly after calling mutate, before results from backend arrive
+    // data is whatever is submitted by mutate()
+    onMutate: async (data) => {
+      const newEvent = data.event;
+      // so that data does not clash with optimistically updated data
+      await queryClient.cancelQueries({ queryKey: ["events", stringId] });
+      // get old data
+      const previousEvent = queryClient.getQueryData([
+        "events",
+        stringId,
+      ]) as EventType;
+      // explicitly sets data for particular queryKey
+      queryClient.setQueryData(["events", stringId], newEvent);
+      return { previousEvent };
+    },
+    onError: (error, data, context) => {
+      queryClient.setQueryData(["events", stringId], context?.previousEvent);
+    },
+    onSettled: () => {
+      // sync data with backend
+      queryClient.invalidateQueries({ queryKey: ["events", stringId] });
     },
   });
-  const updateError = error as CustomError;
+  // const updateError = error as CustomError;
 
   function handleSubmit(formData) {
     mutate({ id: stringId, event: formData });
+    navigate("../");
   }
 
   function handleClose() {
@@ -74,32 +93,15 @@ export default function EditEvent() {
           </div>
         </>
       )}
-      {updateIsError && (
-        <>
-          <ErrorBlock
-            title={"Failed to update event data."}
-            message={updateError.info?.message || "Unknown error"}
-          />
-          <div className="form-actions">
-            <Link to="../" className="button">
-              OK
-            </Link>
-          </div>
-        </>
-      )}
+
       {eventData && (
         <EventForm inputData={eventData} onSubmit={handleSubmit}>
-          {!updateIsPending && (
-            <>
-              <Link to="../" className="button-text">
-                Cancel
-              </Link>
-              <button type="submit" className="button">
-                Update
-              </button>
-            </>
-          )}
-          {updateIsPending && <p>Updating, please wait...</p>}
+          <Link to="../" className="button-text">
+            Cancel
+          </Link>
+          <button type="submit" className="button">
+            Update
+          </button>
         </EventForm>
       )}
     </Modal>
