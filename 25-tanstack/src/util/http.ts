@@ -24,11 +24,20 @@ export class CustomError extends Error {
 type FetchEventsArgs = {
   signal: AbortSignal | null;
   searchTerm?: string;
+  maxResults?: number;
 };
 
-export async function fetchEvents({ signal, searchTerm }: FetchEventsArgs) {
+export async function fetchEvents({
+  signal,
+  searchTerm,
+  maxResults,
+}: FetchEventsArgs) {
   let url = "http://localhost:3000/events";
-  if (searchTerm) {
+  if (searchTerm && maxResults) {
+    url += `?searchTerm=${searchTerm}&max=${maxResults}`;
+  } else if (maxResults) {
+    url += `?max=${maxResults}`;
+  } else if (searchTerm) {
     url += "?search=" + searchTerm;
   }
   const response = await fetch(url, { signal: signal });
