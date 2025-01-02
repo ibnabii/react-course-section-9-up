@@ -92,3 +92,41 @@ export async function fetchSelectableImages({
 
   return images;
 }
+
+type EventArg = {
+  id: string;
+};
+
+type FetchEventArgs = { signal: AbortSignal | null } & EventArg;
+
+export async function fetchEvent({ id, signal }: FetchEventArgs) {
+  const response = await fetch(`http://localhost:3000/events/${id}`, {
+    signal,
+  });
+
+  if (!response.ok) {
+    const error = new CustomError("An error occurred while fetching the event");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const { event } = await response.json();
+
+  return event as EventType;
+}
+
+export async function deleteEvent({ id }: EventArg) {
+  const response = await fetch(`http://localhost:3000/events/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    const error = new CustomError("An error occurred while deleting the event");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return response.json();
+}
