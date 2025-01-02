@@ -3,7 +3,17 @@ export type ImageType = {
   caption: string;
 };
 
-export default function ImagePicker({ images, selectedImage, onSelect }) {
+type ImagePickerProps = {
+  images: ImageType[];
+  selectedImage?: string;
+  onSelect: (imagePath: string) => void;
+};
+
+export default function ImagePicker({
+  images,
+  selectedImage,
+  onSelect,
+}: ImagePickerProps) {
   return (
     <div id="image-picker">
       <p>Select an image</p>

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import LoadingIndicator from "../UI/LoadingIndicator.tsx";
 import ErrorBlock from "../UI/ErrorBlock.tsx";
-import EventItem from "./EventItem.tsx";
+import EventItem, { EventType } from "./EventItem.tsx";
 
 import { fetchEvents, CustomError } from "../../util/http.ts";
 
@@ -36,7 +36,7 @@ export default function NewEventsSection() {
   if (data) {
     content = (
       <ul className="events-list">
-        {data.map((event) => (
+        {data.map((event: EventType) => (
           <li key={event.id}>
             <EventItem event={event} />
           </li>
