@@ -10,6 +10,8 @@ import {
 } from "../../util/http.ts";
 import LoadingIndicator from "../UI/LoadingIndicator.tsx";
 import ErrorBlock from "../UI/ErrorBlock.tsx";
+import { useState } from "react";
+import Modal from "../UI/Modal.tsx";
 
 type EventDetailsRouteParams = {
   id: string;
@@ -50,6 +52,16 @@ export default function EventDetails() {
   const deleteCustomError = deleteError as CustomError;
   const fetchCustomError = fetchError as CustomError;
 
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  function handleStartDeleting() {
+    setIsDeleting(true);
+  }
+
+  function handleStopDeleting() {
+    setIsDeleting(false);
+  }
+
   function handleDelete() {
     mutate({ id: stringId });
   }
@@ -75,17 +87,9 @@ export default function EventDetails() {
             <header>
               <h1>{eventData.title}</h1>
               <nav>
-                <button onClick={handleDelete} disabled={deleteIsPending}>
-                  {deleteIsPending ? "Deleting..." : "Delete"}
-                </button>
+                <button onClick={handleStartDeleting}>Delete</button>
                 <Link to="edit">Edit</Link>
               </nav>
-              {deleteIsError && (
-                <ErrorBlock
-                  title="Failed to delete event."
-                  message={deleteCustomError.info?.message || "Unknown error."}
-                />
-              )}
             </header>
             <div id="event-details-content">
               <img
@@ -105,6 +109,39 @@ export default function EventDetails() {
           </>
         )}
       </article>
+      {isDeleting && (
+        <Modal isOpen={isDeleting} onClose={handleStopDeleting}>
+          <h2>Are you sure?</h2>
+          <p>
+            Do you really want to delete this event? This action cannot be
+            undone.
+          </p>
+          <div className="form-actions">
+            {deleteIsError && (
+              <ErrorBlock
+                title="Failed to delete event."
+                message={deleteCustomError.info?.message || "Unknown error."}
+              />
+            )}
+
+            {deleteIsPending && <p>Deleting, please wait...</p>}
+            {!deleteIsPending && (
+              <>
+                <button onClick={handleStopDeleting} className="button-text">
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="button"
+                  disabled={deleteIsPending}
+                >
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
+        </Modal>
+      )}
     </>
   );
 }
