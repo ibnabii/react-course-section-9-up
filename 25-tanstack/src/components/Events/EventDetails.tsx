@@ -38,7 +38,12 @@ export default function EventDetails() {
   } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({
+        queryKey: ["events"],
+
+        // this means invalidated queries are not re-fetched immediatelly, but only when requiored
+        refetchType: "none",
+      });
       navigate("/events");
     },
   });
