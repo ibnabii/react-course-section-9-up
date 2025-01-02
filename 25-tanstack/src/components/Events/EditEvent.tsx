@@ -43,6 +43,8 @@ export default function EditEvent() {
   } = useQuery({
     queryKey: ["events", stringId],
     queryFn: ({ signal }) => fetchEvent({ id: stringId, signal }),
+    // set to 10s, to avoid duplicated calls, in the end we just performed the same query with react router loader
+    staleTime: 10000,
   });
   const customFetchError = fetchError as CustomError;
 
