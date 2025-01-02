@@ -12,7 +12,6 @@ import {
 import { useState } from "react";
 import LoadingIndicator from "../UI/LoadingIndicator.tsx";
 import ErrorBlock from "../UI/ErrorBlock.tsx";
-import { EventType } from "./EventItem.tsx";
 
 type EditEventRouteParams = {
   id: string;
@@ -68,9 +67,11 @@ export default function EditEvent() {
             title={"Failed to load event data."}
             message={customFetchError.info?.message || "Unknown error"}
           />
-          <Link to="../" className="button-text">
-            OK
-          </Link>
+          <div className="form-actions">
+            <Link to="../" className="button">
+              OK
+            </Link>
+          </div>
         </>
       )}
       {updateIsError && (
@@ -79,9 +80,11 @@ export default function EditEvent() {
             title={"Failed to update event data."}
             message={updateError.info?.message || "Unknown error"}
           />
-          <Link to="../" className="button-text">
-            OK
-          </Link>
+          <div className="form-actions">
+            <Link to="../" className="button">
+              OK
+            </Link>
+          </div>
         </>
       )}
       {eventData && (
