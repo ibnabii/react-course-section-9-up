@@ -1,7 +1,3 @@
-export default function MealSharePage() {
-  return (
-    <main>
-      <h1>Share Meal</h1>
-    </main>
-  );
+export default function ShareMealPage() {
+  return <h1>Share Meal</h1>;
 }
