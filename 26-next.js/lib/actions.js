@@ -1,6 +1,7 @@
 "use server";
 import { saveMeal } from "@/lib/meals";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 // before using useFormState
 // export async function shareMeal(formData) {
 // after using useFormState
@@ -34,5 +35,8 @@ export async function shareMeal(prevState, formData) {
   }
 
   await saveMeal(meal);
+  // layout - revalidates layout, thus also nested pages
+  // page - default - revalidates only this specific route
+  revalidatePath("/meals", "layout");
   redirect("/meals");
 }

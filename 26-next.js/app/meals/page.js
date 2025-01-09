@@ -6,6 +6,11 @@ import { getMeals } from "@/lib/meals";
 import { Suspense } from "react";
 import MealsLoadingPage from "@/app/meals/loading-out";
 
+export const metadata = {
+  title: "All meals",
+  description: "Browse the meals shared by community.",
+};
+
 async function Meals() {
   const meals = await getMeals();
   return <MealsGrid meals={meals} />;
