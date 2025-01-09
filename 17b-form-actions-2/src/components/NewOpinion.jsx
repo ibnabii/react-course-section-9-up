@@ -1,6 +1,7 @@
 import { use, useActionState } from "react";
 import { hasMinLength, isNotEmpty } from "../util/validation.js";
 import { OpinionsContext } from "../store/opinions-context.jsx";
+import Submit from "./Submit.jsx";
 
 export function NewOpinion() {
   async function submitAction(prevFormState, formData) {
@@ -81,9 +82,7 @@ export function NewOpinion() {
         )}
 
         <p className="actions">
-          <button type="submit" disabled={isPending}>
-            Submit
-          </button>
+          <Submit />
         </p>
       </form>
     </div>

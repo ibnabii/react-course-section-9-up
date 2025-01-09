@@ -1,11 +1,12 @@
 export function Opinion({ opinion: { id, title, body, userName, votes } }) {
+  const formattedBody = body.replace(/\n/g, "<br />");
   return (
     <article>
       <header>
         <h3>{title}</h3>
         <p>Shared by {userName}</p>
       </header>
-      <p>{body}</p>
+      <p dangerouslySetInnerHTML={{ __html: formattedBody }}></p>
       <form className="votes">
         <button>
           <svg
