@@ -2,14 +2,14 @@
   "opinions": [
     {
       "id": 1736444203922,
-      "votes": -1,
+      "votes": -4,
       "userName": "test",
       "title": "testowy tytułowy",
       "body": "opinia 1\nopinia 2\n\nopinia 3"
     },
     {
       "id": 1736441423517,
-      "votes": -2,
+      "votes": -3,
       "userName": "Test",
       "title": "Tytuł testowy",
       "body": "1\n2\n3\ndalej tni wiem"
