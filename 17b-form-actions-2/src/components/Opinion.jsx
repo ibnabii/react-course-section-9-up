@@ -1,5 +1,23 @@
+import { OpinionsContext } from "../store/opinions-context.jsx";
+import { use, useActionState } from "react";
+
 export function Opinion({ opinion: { id, title, body, userName, votes } }) {
   const formattedBody = body.replace(/\n/g, "<br />");
+  const { upvoteOpinion, downvoteOpinion } = use(OpinionsContext);
+  const [upvoteFormState, upvoteFormAction, upvotePending] = useActionState(
+    upvoteAction,
+    null,
+  );
+  const [downvoteFormState, downvoteFormAction, downvotePending] =
+    useActionState(downvoteAction, null);
+
+  async function upvoteAction() {
+    await upvoteOpinion(id);
+  }
+  async function downvoteAction() {
+    await downvoteOpinion(id);
+  }
+
   return (
     <article>
       <header>
@@ -8,7 +26,10 @@ export function Opinion({ opinion: { id, title, body, userName, votes } }) {
       </header>
       <p dangerouslySetInnerHTML={{ __html: formattedBody }}></p>
       <form className="votes">
-        <button>
+        <button
+          formAction={upvoteFormAction}
+          disabled={upvotePending || downvotePending}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -28,7 +49,10 @@ export function Opinion({ opinion: { id, title, body, userName, votes } }) {
 
         <span>{votes}</span>
 
-        <button>
+        <button
+          formAction={downvoteFormAction}
+          disabled={upvotePending || downvotePending}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
