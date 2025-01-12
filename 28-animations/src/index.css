@@ -316,6 +316,23 @@ main {
   width: 30rem;
   max-width: 90%;
   z-index: 10;
+  /* attach animation defined below, 0.3s, easing: out, forwards: keep the state once animation is done */
+  animation: slide-up-fade-in 0.3s ease-out forwards;
+}
+
+@keyframes slide-up-fade-in {
+  0%{
+    /*  push it down by 30px initially*/
+    transform: translateY(30px);
+    /* initially invisible */
+    opacity: 0;
+  }
+  100%{
+    /* not pushed down */
+    transform: translateY(0);
+    /* visible */
+    opacity: 1;
+  }
 }
 
 .modal h2 {
