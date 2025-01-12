@@ -317,7 +317,7 @@ main {
   max-width: 90%;
   z-index: 10;
   /* attach animation defined below, 0.3s, easing: out, forwards: keep the state once animation is done */
-  animation: slide-up-fade-in 0.3s ease-out forwards;
+  /*animation: slide-up-fade-in 0.3s ease-out forwards;*/
 }
 
 @keyframes slide-up-fade-in {
