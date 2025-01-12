@@ -280,9 +280,12 @@ main {
   display: inline-block;
   font-size: 0.85rem;
   margin-left: 0.25rem;
+  /*If transform property changes, animate it for 0.3s*/
+  transition: transform 0.3s ease-out;
 }
 
 .challenge-item-details.expanded .challenge-item-details-icon {
+  /*rotate icon*/
   transform: rotate(180deg);
 }
 
