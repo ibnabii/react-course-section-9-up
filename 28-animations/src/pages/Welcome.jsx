@@ -1,24 +1,51 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-import cityImg from '../assets/city.jpg';
-import heroImg from '../assets/hero.png';
+import cityImg from "../assets/city.jpg";
+import heroImg from "../assets/hero.png";
 
 export default function WelcomePage() {
+  const { scrollY } = useScroll();
+  // 1st argument: value to be transformed
+  // 2nd argument: array of breakpoints
+  // 3rd argumetn: array of values related to breakpoints
+  // interpolation is done automatically, here:
+  // between 0 and 200px of scrolling value  (opacity) changes from 1 to 0.5
+  // between 200-300 stays at 0.5 value
+  // then on 300-500 range changes from 0.5 to 0
+  const opacityCity = useTransform(
+    scrollY,
+    [0, 200, 300, 500],
+    [1, 0.5, 0.5, 0],
+  );
+  const yCity = useTransform(scrollY, [0, 200], [0, -100]);
+
+  const opacityHero = useTransform(scrollY, [0, 300, 500], [1, 1, 0]);
+  const yHero = useTransform(scrollY, [0, 200], [0, -150]);
+
+  const scaleText = useTransform(scrollY, [0, 300], [1, 1.5]);
+
   return (
     <>
       <header id="welcome-header">
-        <div id="welcome-header-content">
+        <motion.div id="welcome-header-content" style={{ scale: scaleText }}>
           <h1>Ready for a challenge?</h1>
           <Link id="cta-link" to="/challenges">
             Get Started
           </Link>
-        </div>
-        <img
+        </motion.div>
+        <motion.img
+          style={{ opacity: opacityCity, y: yCity }}
           src={cityImg}
           alt="A city skyline touched by sunlight"
           id="city-image"
         />
-        <img src={heroImg} alt="A superhero wearing a cape" id="hero-image" />
+        <motion.img
+          style={{ opacity: opacityHero, y: yHero }}
+          src={heroImg}
+          alt="A superhero wearing a cape"
+          id="hero-image"
+        />
       </header>
       <main id="welcome-content">
         <section>
